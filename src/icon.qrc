@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/new/button">
+        <file>icon/addButton.png</file>
+        <file>icon/delButton.png</file>
+        <file>icon/foldButton.png</file>
+        <file>icon/lockButton-locked.png</file>
+        <file>icon/lockButton-unlocked.png</file>
+        <file>icon/openButton.png</file>
+        <file>icon/settingButton.png</file>
+        <file>icon/nextPage.png</file>
+        <file>icon/prevPage.png</file>
+        <file>icon/deleteButton.png</file>
+        <file>icon/finishButton.png</file>
+        <file>icon/returnButton.png</file>
+        <file>icon/blank.png</file>
+        <file>icon/icon.ico</file>
+    </qresource>
+</RCC>
