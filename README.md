@@ -15,7 +15,7 @@
    - ![lockButton](/src/icon/lockButton-locked.png) 锁定格子，点击之后无法移动 / 调整大小
    - ![unlockButton](/src/icon/lockButton-unlocked.png) 解锁格子
    - ![prevPage](/src/icon/prevPage.png) ![nextPage](/src/icon/nextPage.png) 上一页 / 下一页
-   - ~[flushButton](/src/icon/flushButton.png) 刷新慕课
+   - ![flushButton](/src/icon/flushButton.png) 刷新慕课
 
 ### 慕课获取说明
 
