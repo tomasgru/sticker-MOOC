@@ -14,5 +14,6 @@
         <file>icon/returnButton.png</file>
         <file>icon/blank.png</file>
         <file>icon/icon.ico</file>
+        <file>icon/flushButton.png</file>
     </qresource>
 </RCC>

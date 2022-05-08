@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     addButton = new QPushButton(this);
     delButton = new QPushButton(this);
     settingButton = new QPushButton(this);
+    flushButton = new QPushButton(this);
     foldButton = new QPushButton(this);
     openButton = new QPushButton(this);
     lockButton = new QPushButton(this);
@@ -37,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent)
     addButton->setGeometry(getAddButtonRect());
     delButton->setGeometry(getdelButtonRect());
     settingButton->setGeometry(getSettingButtonRect());
+    flushButton->setGeometry(getFlushButtonRect());
     foldButton->setGeometry(getFoldButtonRect());
     openButton->setGeometry(getFoldButtonRect());
     lockButton->setGeometry(getLockButtonRect());
@@ -45,12 +47,14 @@ MainWindow::MainWindow(QWidget *parent)
     delButton->hide(), addButton->hide();
     openButton->hide(), foldButton->hide();
     lockButton->hide(), settingButton->hide();
+    flushButton->show();
 
     connect(page_ToDo->lab,&ClicableLabel::clicked,this,&MainWindow::transPage);
     connect(page_Done->lab,&ClicableLabel::clicked,this,&MainWindow::transPage);
     connect(addButton,&QPushButton::clicked,this,&MainWindow::newAddWindow);
     connect(delButton,&QPushButton::clicked,this,&MainWindow::doubleClickedTimerStart);
     connect(settingButton,&QPushButton::clicked,this,&MainWindow::newMoocSettingWindow);
+    connect(flushButton,&QPushButton::clicked,this,&MainWindow::moocAutoEvent);
     connect(page_ToDo,&Page::taskClear,colorTimer,&QTimer::stop);
     //connect(page_ToDo,&Page::taskNew,this,&MainWindow::startColorTimer);
     //connect(colorTimer,&QTimer::timeout,this,&MainWindow::updateLabelColor);
@@ -72,6 +76,7 @@ MainWindow::MainWindow(QWidget *parent)
     openButton->setStyleSheet(buttonStyle("openButton"));
     foldButton->setStyleSheet(buttonStyle("foldButton"));
     lockButton->setStyleSheet(buttonStyle("lockButton-unlocked"));
+    flushButton->setStyleSheet(buttonStyle("flushButton"));
 
     addButton->setToolTip("添加待做");
     delButton->setToolTip("双击按钮，清空已做");
@@ -79,28 +84,27 @@ MainWindow::MainWindow(QWidget *parent)
     foldButton->setToolTip("收起格子");
     lockButton->setToolTip("锁定后，格子将无法移动");
     settingButton->setToolTip("设置慕课自动获取");
+    flushButton->setToolTip("刷新慕课");
 
     config = new QSettings("./config.ini",QSettings::IniFormat);
     config->setIniCodec(QTextCodec::codecForName("UTF8"));
-    if (config->contains("x")) {
-        int x = config->value("x").toInt();
-        int y = config->value("y").toInt();
-        int w = config->value("width").toInt();
-        int h = config->value("height").toInt();
-        setGeometry(x,y,w,h);
-    }
-    if (config->contains("autoMooc")) {
-        if (config->value("autoMooc").toBool()) moocStart();
-    }
-    else config->setValue("autoMooc","false");
+    setPos();
+
     if (!config->contains("title")) config->setValue("title","便签");
     titleLabel->setText(config->value("title").toString());
     titleLabel->setStyleSheet("color: rgb(255,255,255);\n"
                               "font: 9pt \"Microsoft YaHei UI\";\n");
     titleLabel->setAlignment(Qt::AlignCenter);
     titleLabel->show();
+
+    if (!config->contains("lock")) config->setValue("lock","false");
+    if (config->value("lock").toBool()) lockEvent();
+
     parse();
-    moocParse();
+    if (config->contains("autoMooc")) {
+        if (config->value("autoMooc").toBool()) moocStart();
+    }
+    else config->setValue("autoMooc","false");
 }
 
 MainWindow::~MainWindow() {
@@ -194,8 +198,10 @@ void MainWindow::moocStart()
 
 void MainWindow::moocAutoEvent()
 {
+    flushButton->setEnabled(false);
     QProcess::execute("getCourseTaskList.exe");
     moocParse();
+    flushButton->setEnabled(true);
 }
 
 void MainWindow::savePosEvent()
@@ -299,11 +305,13 @@ void MainWindow::lockEvent()
 {
     if (moveLocked) {
         moveLocked = false;
+        config->setValue("lock","false");
         if (!folded) resizeLocked = false;
         lockButton->setStyleSheet(buttonStyle("lockButton-unlocked"));
         lockButton->setToolTip("锁定后，格子将无法移动");
     }
     else {
+        config->setValue("lock","true");
         moveLocked = true, resizeLocked = true;
         lockButton->setStyleSheet(buttonStyle("lockButton-locked"));
         lockButton->setToolTip("解锁后，可以任意拖动格子位置");
@@ -373,6 +381,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     delButton->setGeometry(getdelButtonRect());
     settingButton->setGeometry(getSettingButtonRect());
     titleLabel->setGeometry(getTitleRect());
+    flushButton->setGeometry(getFlushButtonRect());
 
     saveTimer->start(3000);
 }
@@ -380,7 +389,8 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 void MainWindow::moveEvent(QMoveEvent *event)
 {
     Q_UNUSED(event);
-    saveTimer->start(3000);
+    if (inHead || inResize) saveTimer->start(3000);
+    else setPos();
 }
 
 void MainWindow::newAddWindow()
@@ -412,9 +422,21 @@ void MainWindow::doubleClickedTimerStart()
     else doubleClickedTimer->start(500);
 }
 
+void MainWindow::setPos()
+{
+    if (config->contains("x")) {
+        int x = config->value("x").toInt();
+        int y = config->value("y").toInt();
+        int w = config->value("width").toInt();
+        int h = config->value("height").toInt();
+        setGeometry(x,y,w,h);
+    }
+}
+
 QRect MainWindow::getAddButtonRect() { return QRect(smallGeometry().width()-49+OVER,4+OVER,21,21); }
 QRect MainWindow::getdelButtonRect() { return QRect(smallGeometry().width()-49+OVER,4+OVER,21,21); }
 QRect MainWindow::getSettingButtonRect() { return QRect(smallGeometry().width()-26+OVER,4+OVER,21,21); }
 QRect MainWindow::getFoldButtonRect() { return  QRect(5+OVER,4+OVER,21,21); }
 QRect MainWindow::getLockButtonRect() { return QRect(28+OVER,4+OVER,21,21); }
 QRect MainWindow::getTitleRect() { return QRect(55+OVER,4+OVER,smallGeometry().width()-110,21); }
+QRect MainWindow::getFlushButtonRect() { return QRect(smallGeometry().width()-91+OVER, 43+OVER, 20, 20); }

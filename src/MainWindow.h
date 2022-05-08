@@ -9,6 +9,7 @@
 #include <MoocSetting.h>
 #include <QSettings>
 #include <QTextCodec>
+#include <QApplication>
 
 enum pageType {ToDo, Done};
 
@@ -25,7 +26,7 @@ public:
     void moocStart();
     Page *page_ToDo, *page_Done;
     QPushButton *addButton, *delButton;
-    QPushButton *settingButton;
+    QPushButton *settingButton, *flushButton;
     QPushButton *foldButton, *openButton;
     QPushButton *lockButton;
     ClicableLabel *titleLabel;
@@ -60,12 +61,14 @@ private:
     QRect getLockButtonRect();
     QRect getAddWindowRect();
     QRect getTitleRect();
+    QRect getFlushButtonRect();
     void moocAutoEvent();
     void doubleClickedTimerStart();
     void paintBackground();
     void updateLabelColor();
     void startColorTimer();
     void savePosEvent();
+    void setPos();
     QTimer *doubleClickedTimer, *colorTimer, *moocAuto, *saveTimer;
     QSettings *config;
     int oldHeight;

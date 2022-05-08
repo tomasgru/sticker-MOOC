@@ -7,7 +7,7 @@
 #include <QString>
 #include <QPushButton>
 #include <QMouseEvent>
-#include <QLineEdit>
+#include "TaskLineEdit.h"
 
 class MainWindow;
 class Page;

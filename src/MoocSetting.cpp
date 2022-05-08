@@ -8,7 +8,7 @@ MoocSetting::MoocSetting(QWidget *parent, MainWindow *Sibling)
     setSmallGeometry(QRect(sibling->geometry().right(),sibling->smallGeometry().top(),300,240));
     currentPageNumber = 0;
 
-    tokenEdit = new QTextEdit(this);
+    tokenEdit = new QPlainTextEdit(this);
     prevPage = new QPushButton(this);
     nextPage = new QPushButton(this);
     getCourse = new QPushButton(this);
@@ -24,6 +24,7 @@ MoocSetting::MoocSetting(QWidget *parent, MainWindow *Sibling)
     nextPage->setStyleSheet(MainWindow::buttonStyle("nextPage"));
     confirm->setStyleSheet(MainWindow::buttonStyle("blank"));
     getCourse->setStyleSheet(MainWindow::buttonStyle("blank"));
+    tokenEdit->setStyleSheet("font: 9pt \"SimSun\";");
     confirm->setText("确定");
     getCourse->setText("获取课程");
     tokenEdit->setPlaceholderText("在这里输入mob-token，再点击获取课程进行选择，最后点确定");
@@ -42,7 +43,7 @@ MoocSetting::MoocSetting(QWidget *parent, MainWindow *Sibling)
         fp.open(QFile::ReadOnly | QFile::Text);
         QJsonDocument jsonDoc = QJsonDocument::fromJson(QTextStream(&fp).readAll().toLocal8Bit());
         QJsonObject jsonRoot = jsonDoc.object();
-        tokenEdit->setText(jsonRoot["mob_token"].toString());
+        tokenEdit->appendPlainText(jsonRoot["mob_token"].toString());
     }
 }
 
@@ -55,6 +56,7 @@ void MoocSetting::getAllCourse()
 {
     if (tokenEdit->toPlainText() == "") return;
     QString mob_token = tokenEdit->toPlainText();
+    mob_token.remove(QRegExp("\\s"));
     getCourse->setEnabled(false);
     QFile saveToken("moocConfig.json");
     saveToken.open(QFile::WriteOnly);

@@ -4,7 +4,7 @@
 #include "TranslucentWidget.h"
 #include <QCheckBox>
 #include <QPushButton>
-#include <QTextEdit>
+#include <QPlainTextEdit>
 #include <QProcess>
 
 class MainWindow;
@@ -34,7 +34,7 @@ public:
 
 private:
     MainWindow *sibling;
-    QTextEdit *tokenEdit;
+    QPlainTextEdit *tokenEdit;
     QList<elem*> items;
     QPushButton *prevPage, *nextPage;
     QPushButton *getCourse, *confirm;
