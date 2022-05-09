@@ -59,13 +59,13 @@
    
    2. 本人非计算机系学生，所以未了解太多命名方面的规范，以及对象之间的关系可能有些混乱。
    
-   3. **debug 时需要自行去 `gin.pro` 更改 Python 路径**
+   3. **debug 时需要自行去 `gin.pro` 更改 Python 路径。**
    
-   4. 因为不会用 QT 的 Network 模块，所以改用了 Python 的 Requests 模块。在尝试发布 Release 版本时需要自行添加 Python 的依赖库并自行删除多余依赖库，否则文件体积会很大，这一步骤挺麻烦的。考虑到 Python 代码体积不大，所以直接将要调用的函数打包成了 `.exe` 文件，由 QT 阻塞运行。
+   4. 因为不会用 QT 的 Network 模块，所以改用了 Python 的 Requests 模块。
    
-   5. 调用 Python 的两个地方分别在 `void MainWindow::moocAutoEvent()` 以及 `void MoocSetting::getAllCourse()`. 需要注意的是，源码中并未提供这两个文件，需要自行在 Python 中分别调用 `mooc.getAllMyCouresList` 与 `mooc.getCourseTaskList` 并自行打包成 `.exe` 文件，可以使用 `pyinstaller -F -w -i icon.ico xxxx.py`.
+   5. 调用 Python 的两个地方分别在 `void MainWindow::moocAutoEvent()` 以及 `void MoocSetting::getAllCourse()`. 可以使用`pyinstaller -F -w -i icon.ico mooc.py`将`.py`文件打包成`.exe`文件。
    
-   6. 如果不想这样做，可以按照以下方式改写代码直接调用 Python 函数。[参考文章](https://zhuanlan.zhihu.com/p/450318119) [参考文档](https://docs.python.org/3/)
+   6. 如果不想使用打包后的`.exe`文件，可以按照以下方式改写代码直接调用 Python 函数。[参考文章](https://zhuanlan.zhihu.com/p/450318119) [参考文档](https://docs.python.org/3/)
 
        ```cpp
        // QT 与 Python 的宏定义冲突了

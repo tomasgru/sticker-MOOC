@@ -67,7 +67,7 @@ void MoocSetting::getAllCourse()
     saveToken.write(output.toLocal8Bit());
     saveToken.close();
 
-    QProcess::execute("getAllMyCouresList.exe");
+    QProcess::execute("mooc.exe getAllMyCourseList");
 
     QFile fp("courseList.json");
     if (fp.exists()) {

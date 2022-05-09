@@ -199,7 +199,7 @@ void MainWindow::moocStart()
 void MainWindow::moocAutoEvent()
 {
     flushButton->setEnabled(false);
-    QProcess::execute("getCourseTaskList.exe");
+    QProcess::execute("mooc.exe getCourseTaskList");
     moocParse();
     flushButton->setEnabled(true);
 }

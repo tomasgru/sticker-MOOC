@@ -1,6 +1,7 @@
 import requests
 import json
 import time
+import sys
 
 class mooc():
     def __init__(self):
@@ -9,7 +10,7 @@ class mooc():
         self.output = {'homeworks' : [], 'quizs' : [], 'evaluate' : [], 'exams' : []}
         self.items = ['homeworks', 'quizs']
         
-    def getAllMyCouresList(self):
+    def getAllMyCourseList(self):
         url = 'https://www.icourse163.org/mob/course/getAllMyCourseList/v2'
         payload = {
             'mob-token' : self.mob_token,
@@ -88,3 +89,9 @@ class mooc():
         fp = open('taskList.json', 'w')
         json.dump(self.output, fp)
         
+if __name__ == '__main__':
+    a = mooc()
+    if (sys.argv[1]=="getAllMyCourseList"):
+        a.getAllMyCourseList()
+    elif (sys.argv[1]=="getCourseTaskList"):
+        a.getCourseTaskList()
