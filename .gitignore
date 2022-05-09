@@ -1,0 +1,3 @@
+*.json
+*.pro.user
+.dist/
