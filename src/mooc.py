@@ -91,7 +91,9 @@ class mooc():
         
 if __name__ == '__main__':
     a = mooc()
-    if (sys.argv[1]=="getAllMyCourseList"):
-        a.getAllMyCourseList()
-    elif (sys.argv[1]=="getCourseTaskList"):
-        a.getCourseTaskList()
+    try:
+        if (sys.argv[1]=="getAllMyCourseList"):
+            a.getAllMyCourseList()
+        elif (sys.argv[1]=="getCourseTaskList"):
+            a.getCourseTaskList()
+    except: pass
