@@ -1,6 +1,6 @@
 #ifndef TRANSLUCENTWIDGET_H
 #define TRANSLUCENTWIDGET_H
-#define OVER 35
+#define OVER 5
 
 #include <QWidget>
 #include <QPainter>

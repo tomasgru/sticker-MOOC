@@ -20,6 +20,7 @@ QString viceLableStyle("color: rgb(200,200,200);\n"
 Page::Page(MainWindow *Parent, bool TODO)
     : QWidget(Parent), m_done(!TODO)
 {
+    QWidget::hide();
     parent = Parent;
     lab = new ClicableLabel(Parent);
     prevPage = new QPushButton(Parent);
