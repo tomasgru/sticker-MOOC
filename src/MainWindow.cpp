@@ -282,8 +282,8 @@ void MainWindow::foldEvent()
     setGeometry(QRect(geometry().left(),geometry().top(),geometry().width(),28+2*OVER));
     page_ToDo->prevPage->hide(), page_ToDo->nextPage->hide();
     page_Done->prevPage->hide(), page_Done->nextPage->hide();
-    foldButton->hide();
-    openButton->show();
+    foldButton->hide(), openButton->show();
+    flushButton->hide();
 }
 
 void MainWindow::openEvent()
@@ -292,8 +292,8 @@ void MainWindow::openEvent()
     if (!moveLocked) resizeLocked = false;
     setMinimumHeight(300+2*OVER);
     setGeometry(QRect(geometry().left(),geometry().top(),geometry().width(),oldHeight));
-    openButton->hide();
-    foldButton->show();
+    openButton->hide(), foldButton->show();
+    flushButton->show();
     page_Done->lab->show(), page_ToDo->lab->show();
     if (currentPage == ToDo) page_ToDo->setMain(), page_Done->setVice();
     else page_Done->setMain(), page_ToDo->setVice();
