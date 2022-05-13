@@ -10,6 +10,7 @@
 #include <QSettings>
 #include <QTextCodec>
 #include <QApplication>
+#include <windows.h>
 
 enum pageType {ToDo, Done};
 
@@ -17,7 +18,7 @@ class MainWindow : public TranslucentWidget
 {
     Q_OBJECT
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QWidget *parent = nullptr, QSettings *config = nullptr);
     ~MainWindow();
     void addTask(QDateTime DateTime, QString Text, bool Done, int Mooc, QString Type = nullptr);
     void save();

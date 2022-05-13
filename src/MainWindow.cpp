@@ -1,7 +1,7 @@
 #include "MainWindow.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : TranslucentWidget(parent)
+MainWindow::MainWindow(QWidget *parent, QSettings *config)
+    : TranslucentWidget(parent), config(config)
 {
     currentPage = ToDo;
     addWindow = nullptr;
@@ -86,8 +86,6 @@ MainWindow::MainWindow(QWidget *parent)
     settingButton->setToolTip("设置慕课自动获取");
     flushButton->setToolTip("刷新慕课");
 
-    config = new QSettings("./config.ini",QSettings::IniFormat);
-    config->setIniCodec(QTextCodec::codecForName("UTF8"));
     setPos();
 
     if (!config->contains("title")) config->setValue("title","便签");
